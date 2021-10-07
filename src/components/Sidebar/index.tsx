@@ -1,32 +1,17 @@
-import React, {FunctionComponent, useEffect, useState} from "react";
-import {useRepository} from "../RepositoryProvider";
+import React, {FunctionComponent} from "react";
 import {CountedTag} from "../../database/query";
 
 export type SidebarProps = {
+    countedTags: CountedTag[]
 }
 
-const Sidebar: FunctionComponent<SidebarProps> = () => {
-    const repository = useRepository()
-
-    const [tags, setTags] = useState<CountedTag[]>([])
-
-    useEffect(() => {
-        console.log("sidebar use effect")
-
-        if (repository) {
-            repository.get().then(d => {
-                console.log(d)
-                setTags(d.query().countedTags())
-            }).catch(console.log)
-        }
-    }, [repository])
-
+const Sidebar: FunctionComponent<SidebarProps> = ({countedTags}) => {
     return (
         <div>
             <ul>
                 {
-                    tags.map(t => (
-                        <li>{t.name} ({t.count})</li>
+                    countedTags.map(t => (
+                        <li key={t.name}>{t.name} ({t.count})</li>
                     ))
                 }
             </ul>

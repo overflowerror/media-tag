@@ -33,7 +33,7 @@ const createWindow = (): void => {
       label: 'File',
       submenu: [
         {
-          label: 'Open Repository',
+          label: 'Open',
           click: menuItem => {
             dialog.showOpenDialog({
               title: "Open Repository",
