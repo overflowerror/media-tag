@@ -1,4 +1,9 @@
-class Database {
+import {KEY_DIRECTORIES, KEY_FILES} from "./config-keys";
+import {Directory} from "./directory";
+import {MediaFile} from "./file";
+import {Query} from "./query";
+
+export class Database {
     private directories: Directory[]
     private files: MediaFile[]
 

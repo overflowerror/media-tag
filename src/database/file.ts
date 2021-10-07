@@ -1,4 +1,7 @@
-class MediaFile {
+import {FileTypeFromExtension, MediaFileType} from "./file-type";
+import {KEY_FILE_PATH, KEY_FILE_TAGS} from "./config-keys";
+
+export class MediaFile {
     private readonly path: string
     private readonly type: MediaFileType
     private tags: string[]

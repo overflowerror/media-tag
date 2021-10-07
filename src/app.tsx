@@ -1,9 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import RepositoryProvider from "./components/RepositoryProvider";
+import Home from "./views/Home";
 
 function render() {
     ReactDOM.render(
-        <h2>Hello from React!</h2>, document.body
+        <RepositoryProvider>
+            <Home />
+        </RepositoryProvider>,
+        document.getElementById("root")
     );
 }
 

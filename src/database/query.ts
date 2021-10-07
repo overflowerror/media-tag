@@ -1,10 +1,12 @@
-type CountedTag = {
+import {MediaFile} from "./file";
+import {MediaFileType} from "./file-type";
+
+export type CountedTag = {
     name: string,
     count: number
 }
 
-
-class Query {
+export class Query {
     private readonly files: MediaFile[]
 
     public constructor(files: MediaFile[]) {

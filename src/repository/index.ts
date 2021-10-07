@@ -1,6 +1,8 @@
 import * as fsPromises from "fs/promises";
+import {Database} from "../database/database";
+import {FileTypeFromExtension, MediaFileType} from "../database/file-type";
 
-const DB_FILE = ".tagdb.json"
+const DB_FILE = ".tagdb"
 
 class Repository {
     private readonly path: string
@@ -58,3 +60,5 @@ class Repository {
         return untagged.filter((v, i, s) => s.indexOf(v) == i)
     }
 }
+
+export default Repository

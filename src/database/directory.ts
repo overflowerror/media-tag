@@ -1,4 +1,4 @@
-class Directory {
+export class Directory {
     private readonly path: string
 
     constructor(path: string) {

@@ -1,10 +1,10 @@
-enum MediaFileType {
+export enum MediaFileType {
     unknown,
     video,
     image
 }
 
-function FileTypeFromExtension(name: string): MediaFileType {
+export function FileTypeFromExtension(name: string): MediaFileType {
     while (name.indexOf(".") >= 0) {
         name = name.substring(name.indexOf(".") + 1)
     }
