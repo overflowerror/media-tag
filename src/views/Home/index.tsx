@@ -16,6 +16,8 @@ function queryFilter(query: Query, tags: string[]): Query {
     return query
 }
 
+const emptyQuery = new Query([])
+
 const Home: FunctionComponent<HomeProps> = () => {
     const repository = useRepository()
 
@@ -41,7 +43,7 @@ const Home: FunctionComponent<HomeProps> = () => {
         }
     }, [repository])
 
-    const query = database ? queryFilter(database.query(), tags) : new Query([])
+    const query = database ? queryFilter(database.query(), tags) : emptyQuery
 
     return (
         <div>
@@ -57,7 +59,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                         <></>
                     }
                     { !selected &&
-                        <MediaList />
+                        <MediaList basePath={repository.getPath()} files={query.get()} />
                     }
                 </>
             }

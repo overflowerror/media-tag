@@ -12,6 +12,10 @@ class Repository {
         this.path = path
     }
 
+    public getPath(): string {
+        return this.path
+    }
+
     public async get(): Promise<Database> {
         if (!this.cached) {
             const buffer = await fsPromises.readFile(this.path + "/" + DB_FILE)
