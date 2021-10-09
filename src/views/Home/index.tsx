@@ -27,20 +27,20 @@ const Home: FunctionComponent<HomeProps> = () => {
 
     const [database, setDatabase] = useState<Database|null>(null)
 
-    const [error, setError] = useState<string|null>("Loading...")
+    const [message, setMessage] = useState<string|null>("Loading...")
 
     useEffect(() => {
         if (repository) {
             repository.get()
                 .then(d => {
-                    setError(null)
+                    setMessage(null)
                     setDatabase(d)
                 })
                 .catch(e => {
-                    setError(e)
+                    setMessage(e)
                 })
         } else {
-            setError("no repository selected")
+            setMessage("no repository selected")
         }
     }, [repository])
 
@@ -51,23 +51,23 @@ const Home: FunctionComponent<HomeProps> = () => {
         const clone = database.clone() // not a deep copy
         clone.updateFile(updatedFile)
         repository.update(clone)
-        setError("Saving...")
+        setMessage("Saving...")
 
         repository.write().then(() => {
             setSelected(updatedFile)
             setDatabase(clone)
-            setError(null)
+            setMessage(null)
         })
     }
 
     return (
         <div>
-            { error &&
+            { message &&
                 <div className="message">
-                    {error}
+                    {message}
                 </div>
             }
-            { !error &&
+            { !message &&
                 <>
                     <Sidebar countedTags={query.countedTags()} />
                     { selected &&
