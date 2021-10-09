@@ -63,6 +63,10 @@ class Repository {
 
         return untagged.filter((v, i, s) => s.indexOf(v) == i)
     }
+
+    public update(db: Database) {
+        this.cached = db
+    }
 }
 
 export default Repository

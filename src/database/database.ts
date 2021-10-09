@@ -75,4 +75,13 @@ export class Database {
 
         return obj
     }
+
+    public clone(): Database {
+        const clone = new Database()
+        clone.directories = [...this.directories]
+
+        // not a deep copy; files are references
+        clone.files = [...this.files]
+        return clone
+    }
 }

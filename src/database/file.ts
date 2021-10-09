@@ -32,7 +32,7 @@ export class MediaFile {
     public removeTag(tag: string) {
         const i = this.tags.indexOf(tag)
         if (i >= 0) {
-            this.tags.slice(i, 1)
+            this.tags.splice(i, 1)
         }
     }
 
@@ -70,5 +70,11 @@ export class MediaFile {
         obj[KEY_FILE_TAGS] = this.tags
 
         return obj
+    }
+
+    public clone(): MediaFile {
+        const clone = new MediaFile(this.path)
+        clone.tags = [...this.tags]
+        return clone
     }
 }

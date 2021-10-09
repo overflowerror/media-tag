@@ -45,6 +45,20 @@ const Home: FunctionComponent<HomeProps> = () => {
     }, [repository])
 
     const query = database ? queryFilter(database.query(), tags) : emptyQuery
+    const allTags = database ? database.query().tags() : []
+
+    const mediaUpdate = (updatedFile: MediaFile) => {
+        const clone = database.clone() // not a deep copy
+        clone.updateFile(updatedFile)
+        repository.update(clone)
+        setError("Saving...")
+
+        repository.write().then(() => {
+            setSelected(updatedFile)
+            setDatabase(clone)
+            setError(null)
+        })
+    }
 
     return (
         <div>
@@ -59,7 +73,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                     { selected &&
                         <>
                             <button onClick={() => setSelected(null)}>Back</button>
-                            <MediaDetails basePath={repository.getPath()} file={selected} />
+                            <MediaDetails basePath={repository.getPath()} file={selected} onUpdate={mediaUpdate} />
                         </>
                     }
                     { !selected &&
