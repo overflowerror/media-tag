@@ -5,6 +5,7 @@ import {MediaFile} from "../../database/file";
 import {useRepository} from "../../components/RepositoryProvider";
 import {Query} from "../../database/query";
 import {Database} from "../../database/database";
+import MediaDetails from "../../components/MediaDetails";
 
 export type HomeProps = {
 }
@@ -56,10 +57,13 @@ const Home: FunctionComponent<HomeProps> = () => {
                 <>
                     <Sidebar countedTags={query.countedTags()} />
                     { selected &&
-                        <></>
+                        <>
+                            <button onClick={() => setSelected(null)}>Back</button>
+                            <MediaDetails basePath={repository.getPath()} file={selected} />
+                        </>
                     }
                     { !selected &&
-                        <MediaList basePath={repository.getPath()} files={query.get()} />
+                        <MediaList basePath={repository.getPath()} files={query.get()} onSelect={setSelected} />
                     }
                 </>
             }

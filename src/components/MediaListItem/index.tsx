@@ -4,23 +4,14 @@ import MediaPreview from "../MediaPreview";
 
 export type MediaListItemProps = {
     basePath: string,
-    file: MediaFile
+    file: MediaFile,
+    onClick: (file: MediaFile) => void
 }
 
-const MediaListItem: FunctionComponent<MediaListItemProps> = ({basePath, file}) => {
+const MediaListItem: FunctionComponent<MediaListItemProps> = ({basePath, file, onClick}) => {
     return (
-        <div>
+        <div onClick={() => onClick(file)}>
             <MediaPreview basePath={basePath} file={file} />
-            <div>
-                Tags:
-                <ul>
-                    {
-                        file.getTags().map(t => (
-                            <li key={t}>{t}</li>
-                        ))
-                    }
-                </ul>
-            </div>
         </div>
     )
 }
