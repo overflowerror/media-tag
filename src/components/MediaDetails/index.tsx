@@ -58,10 +58,13 @@ const MediaDetails: FunctionComponent<MediaDetailsProps> = ({basePath, file, onU
                                 setNewTagInput(value)
                             }}
                         />
-                        <button onClick={() => {
-                            addTag(newTagInput)
-                            setNewTagInput("")
-                        }}>
+                        <button
+                            onClick={() => {
+                                addTag(newTagInput)
+                                setNewTagInput("")
+                            }}
+                            disabled={currentFile.getTags().indexOf(newTagInput) >= 0}
+                        >
                             Add
                         </button>
                     </li>
