@@ -46,6 +46,12 @@ export class Query {
         )
     }
 
+    public limit(limit: number, offset: number = 0) {
+        return new Query(
+            this.files.slice(offset, limit + offset)
+        )
+    }
+
     public is(type: MediaFileType): Query {
         return new Query(
             this.files.filter(f => f.getType() == type)

@@ -131,7 +131,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                                     {untagged.length} untagged files
                                 </a>
                             }
-                            <MediaList basePath={basePath} files={query.get()} onSelect={setSelected} />
+                            <MediaList basePath={basePath} query={query} onSelect={setSelected} />
                         </>
                     }
                 </>
