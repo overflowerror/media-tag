@@ -13,7 +13,7 @@ const MediaList: FunctionComponent<MediaListProps> = ({basePath, files, onSelect
         <div>
             {
                 files.map(f => (
-                    <MediaListItem basePath={basePath} file={f} onClick={onSelect} />
+                    <MediaListItem key={f.getPath()} basePath={basePath} file={f} onClick={onSelect} />
                 ))
             }
         </div>

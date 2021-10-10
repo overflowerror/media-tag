@@ -9,6 +9,7 @@ export class MediaFile {
     constructor(path: string) {
         this.path = path
         this.type = FileTypeFromExtension(path)
+        this.tags = []
     }
 
     public getPath(): string {

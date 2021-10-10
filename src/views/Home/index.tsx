@@ -7,6 +7,7 @@ import {Database} from "../../database/database";
 import MediaDetails from "../../components/MediaDetails";
 import Repository from "../../repository";
 import {ipcRenderer} from "electron";
+import MediaPreview from "../../components/MediaPreview";
 
 const OPEN_REPOSITORY_MESSAGE_NAME = "MSG_OPEN_REPO"
 
@@ -29,6 +30,9 @@ const Home: FunctionComponent<HomeProps> = () => {
     const [repository, setRepository] = useState<Repository|null>(null)
     const [database, setDatabase] = useState<Database|null>(null)
 
+    const [untagged, setUntagged] = useState<string[]>([])
+    const [showUntagged, setShowUntagged] = useState<boolean>(false)
+
     const [message, setMessage] = useState<string|null>("No repository selected")
 
     useEffect(() => {
@@ -41,6 +45,7 @@ const Home: FunctionComponent<HomeProps> = () => {
 
                 setMessage("Loading...")
                 setDatabase(null)
+                setUntagged([])
                 repo.get()
                     .then(d => {
                         setMessage(null)
@@ -49,6 +54,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                     .catch(e => {
                         setMessage(e)
                     })
+                repo.findUntagged().then(setUntagged)
             } else {
                 setMessage("no repository selected")
                 setRepository(null)
@@ -78,7 +84,11 @@ const Home: FunctionComponent<HomeProps> = () => {
             setSelected(updatedFile)
             setMessage(null)
         })
+
+        repoClone.findUntagged().then(setUntagged)
     }
+
+    const basePath = repository ? repository.getPath() : ""
 
     return (
         <div>
@@ -93,11 +103,36 @@ const Home: FunctionComponent<HomeProps> = () => {
                     { selected &&
                         <>
                             <button onClick={() => setSelected(null)}>Back</button>
-                            <MediaDetails basePath={repository.getPath()} file={selected} onUpdate={mediaUpdate} />
+                            <MediaDetails basePath={basePath} file={selected} onUpdate={mediaUpdate} />
                         </>
                     }
-                    { !selected &&
-                        <MediaList basePath={repository.getPath()} files={query.get()} onSelect={setSelected} />
+                    { !selected && showUntagged &&
+                        <>
+                            <h1>Untagged</h1>
+                            <button onClick={() => setShowUntagged(false)}>Back</button>
+                            { untagged.map(u => new MediaFile(u)).map(u => (
+                                <div
+                                    onClick={() => {
+                                    setSelected(u)
+                                }}
+                                    key={u.getPath()}
+                                >
+                                    <MediaPreview basePath={basePath} file={u} />
+                                </div>
+                            ))}
+                        </>
+                    }
+                    { !selected && !showUntagged &&
+                        <>
+                            { untagged.length > 0 &&
+                                <a
+                                    onClick={() => setShowUntagged(true) }
+                                >
+                                    {untagged.length} untagged files
+                                </a>
+                            }
+                            <MediaList basePath={basePath} files={query.get()} onSelect={setSelected} />
+                        </>
                     }
                 </>
             }
