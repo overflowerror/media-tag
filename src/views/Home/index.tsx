@@ -2,10 +2,13 @@ import React, {FunctionComponent, useEffect, useState} from "react";
 import Sidebar from "../../components/Sidebar";
 import MediaList from "../../components/MediaList";
 import {MediaFile} from "../../database/file";
-import {useRepository} from "../../components/RepositoryProvider";
 import {Query} from "../../database/query";
 import {Database} from "../../database/database";
 import MediaDetails from "../../components/MediaDetails";
+import Repository from "../../repository";
+import {ipcRenderer} from "electron";
+
+const OPEN_REPOSITORY_MESSAGE_NAME = "MSG_OPEN_REPO"
 
 export type HomeProps = {
 }
@@ -20,42 +23,59 @@ function queryFilter(query: Query, tags: string[]): Query {
 const emptyQuery = new Query([])
 
 const Home: FunctionComponent<HomeProps> = () => {
-    const repository = useRepository()
-
     const [tags, setTags] = useState<string[]>([])
     const [selected, setSelected] = useState<MediaFile|null>(null)
 
+    const [repository, setRepository] = useState<Repository|null>(null)
     const [database, setDatabase] = useState<Database|null>(null)
 
-    const [message, setMessage] = useState<string|null>("Loading...")
+    const [message, setMessage] = useState<string|null>("No repository selected")
 
     useEffect(() => {
-        if (repository) {
-            repository.get()
-                .then(d => {
-                    setMessage(null)
-                    setDatabase(d)
-                })
-                .catch(e => {
-                    setMessage(e)
-                })
-        } else {
-            setMessage("no repository selected")
+        const listener = (event: any, data: any) => {
+            console.log(data)
+            const _path = data as string
+            if (_path) {
+                const repo = new Repository(_path)
+                setRepository(repo)
+
+                setMessage("Loading...")
+                setDatabase(null)
+                repo.get()
+                    .then(d => {
+                        setMessage(null)
+                        setDatabase(d)
+                    })
+                    .catch(e => {
+                        setMessage(e)
+                    })
+            } else {
+                setMessage("no repository selected")
+                setRepository(null)
+            }
         }
-    }, [repository])
+
+        ipcRenderer.on(OPEN_REPOSITORY_MESSAGE_NAME, listener)
+        return () => {
+            // cleanup
+            ipcRenderer.removeListener(OPEN_REPOSITORY_MESSAGE_NAME, listener)
+        }
+    }, [setRepository])
 
     const query = database ? queryFilter(database.query(), tags) : emptyQuery
     const allTags = database ? database.query().tags() : []
 
     const mediaUpdate = (updatedFile: MediaFile) => {
-        const clone = database.clone() // not a deep copy
-        clone.updateFile(updatedFile)
-        repository.update(clone)
+        const dbClone = database.clone() // not a deep copy
+        dbClone.updateFile(updatedFile)
+
+        const repoClone = repository.update(dbClone)
         setMessage("Saving...")
 
-        repository.write().then(() => {
+        repoClone.write().then(() => {
+            setRepository(repoClone)
+            setDatabase(dbClone)
             setSelected(updatedFile)
-            setDatabase(clone)
             setMessage(null)
         })
     }

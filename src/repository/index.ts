@@ -64,8 +64,10 @@ class Repository {
         return untagged.filter((v, i, s) => s.indexOf(v) == i)
     }
 
-    public update(db: Database) {
-        this.cached = db
+    public update(db: Database): Repository {
+        const clone = new Repository(this.path)
+        clone.cached = db
+        return clone
     }
 }
 
