@@ -116,7 +116,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                     { selected &&
                         <>
                             <button onClick={() => setSelected(null)}>Back</button>
-                            <MediaDetails basePath={basePath} file={selected} onUpdate={mediaUpdate} />
+                            <MediaDetails basePath={basePath} file={selected} onUpdate={mediaUpdate} allTags={allTags} />
                         </>
                     }
                     { !selected && showUntagged &&

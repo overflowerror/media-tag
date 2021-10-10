@@ -1,14 +1,16 @@
 import React, {FunctionComponent, useEffect, useState} from "react";
 import {MediaFile} from "../../database/file";
 import MediaPreview from "../MediaPreview";
+import Autocomplete from "../Autocomplete";
 
 export type MediaDetailsProps = {
     basePath: string,
     file: MediaFile,
-    onUpdate: (file: MediaFile) => void
+    onUpdate: (file: MediaFile) => void,
+    allTags: string[]
 }
 
-const MediaDetails: FunctionComponent<MediaDetailsProps> = ({basePath, file, onUpdate}) => {
+const MediaDetails: FunctionComponent<MediaDetailsProps> = ({basePath, file, onUpdate, allTags}) => {
     const [currentFile, setCurrentFile] = useState<MediaFile>(file)
     const [hasChanges, setHasChanges] = useState<boolean>(false)
 
@@ -49,9 +51,13 @@ const MediaDetails: FunctionComponent<MediaDetailsProps> = ({basePath, file, onU
                         ))
                     }
                     <li>
-                        <input type="text" value={newTagInput} onChange={(event) => {
-                            setNewTagInput(event.target.value)
-                        }} />
+                        <Autocomplete
+                            value={newTagInput}
+                            options={allTags}
+                            onChange={(value) => {
+                                setNewTagInput(value)
+                            }}
+                        />
                         <button onClick={() => {
                             addTag(newTagInput)
                             setNewTagInput("")
