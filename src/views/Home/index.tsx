@@ -99,7 +99,20 @@ const Home: FunctionComponent<HomeProps> = () => {
             }
             { !message &&
                 <>
-                    <Sidebar countedTags={query.countedTags()} />
+                    <Sidebar
+                        countedTags={query.countedTags()}
+                        selected={tags}
+                        onSelect={(tag) => {
+                            const i = tags.indexOf(tag)
+                            const _tags = [...tags]
+                            if (i < 0) {
+                                _tags.push(tag)
+                            } else {
+                                _tags.splice(i, 1)
+                            }
+                            setTags(_tags)
+                        }}
+                    />
                     { selected &&
                         <>
                             <button onClick={() => setSelected(null)}>Back</button>
