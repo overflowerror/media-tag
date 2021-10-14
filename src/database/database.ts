@@ -11,7 +11,7 @@ export class Database {
     }
 
     public query(): Query {
-        return new Query(this.files)
+        return new Query(this.files.sort((f1, f2) => f1.compareTo(f2)))
     }
 
     public addDirectory(path: string) {
