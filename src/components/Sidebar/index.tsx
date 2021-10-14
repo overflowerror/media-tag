@@ -1,5 +1,6 @@
 import React, {FunctionComponent} from "react";
 import {CountedTag} from "../../database/query";
+import "./Sidebar.css"
 
 export type SidebarProps = {
     countedTags: CountedTag[],
@@ -9,7 +10,7 @@ export type SidebarProps = {
 
 const Sidebar: FunctionComponent<SidebarProps> = ({countedTags, selected, onSelect}) => {
     return (
-        <div>
+        <div className="sidebar">
             <ul>
                 {
                     countedTags.map(t => (

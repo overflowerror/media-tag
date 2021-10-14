@@ -7,7 +7,9 @@ import {Database} from "../../database/database";
 import MediaDetails from "../../components/MediaDetails";
 import Repository from "../../repository";
 import {ipcRenderer} from "electron";
-import MediaPreview from "../../components/MediaPreview";
+import MediaPreview from "../../components/Media";
+
+import "./Home.css"
 
 const OPEN_REPOSITORY_MESSAGE_NAME = "MSG_OPEN_REPO"
 
@@ -113,40 +115,42 @@ const Home: FunctionComponent<HomeProps> = () => {
                             setTags(_tags)
                         }}
                     />
-                    { selected &&
-                        <>
-                            <button onClick={() => setSelected(null)}>Back</button>
-                            <MediaDetails basePath={basePath} file={selected} onUpdate={mediaUpdate} allTags={allTags} />
-                        </>
-                    }
-                    { !selected && showUntagged &&
-                        <>
-                            <h1>Untagged</h1>
-                            <button onClick={() => setShowUntagged(false)}>Back</button>
-                            { untagged.map(u => new MediaFile(u)).map(u => (
-                                <div
-                                    onClick={() => {
-                                    setSelected(u)
-                                }}
-                                    key={u.getPath()}
-                                >
-                                    <MediaPreview basePath={basePath} file={u} />
-                                </div>
-                            ))}
-                        </>
-                    }
-                    { !selected && !showUntagged &&
-                        <>
-                            { untagged.length > 0 &&
-                                <a
-                                    onClick={() => setShowUntagged(true) }
-                                >
-                                    {untagged.length} untagged files
-                                </a>
-                            }
-                            <MediaList basePath={basePath} query={query} onSelect={setSelected} />
-                        </>
-                    }
+                    <div className="main">
+                        { selected &&
+                            <>
+                                <button onClick={() => setSelected(null)}>Back</button>
+                                <MediaDetails basePath={basePath} file={selected} onUpdate={mediaUpdate} allTags={allTags} />
+                            </>
+                        }
+                        { !selected && showUntagged &&
+                            <>
+                                <h1>Untagged</h1>
+                                <button onClick={() => setShowUntagged(false)}>Back</button>
+                                { untagged.map(u => new MediaFile(u)).map(u => (
+                                    <div
+                                        onClick={() => {
+                                        setSelected(u)
+                                    }}
+                                        key={u.getPath()}
+                                    >
+                                        <MediaPreview basePath={basePath} file={u} />
+                                    </div>
+                                ))}
+                            </>
+                        }
+                        { !selected && !showUntagged &&
+                            <>
+                                { untagged.length > 0 &&
+                                    <a
+                                        onClick={() => setShowUntagged(true) }
+                                    >
+                                        {untagged.length} untagged files
+                                    </a>
+                                }
+                                <MediaList basePath={basePath} query={query} onSelect={setSelected} />
+                            </>
+                        }
+                    </div>
                 </>
             }
         </div>

@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from "react";
 import {MediaFile} from "../../database/file";
-import MediaPreview from "../MediaPreview";
+import MediaPreview from "../Media";
 import Autocomplete from "../Autocomplete";
 
 export type MediaDetailsProps = {

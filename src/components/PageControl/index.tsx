@@ -1,5 +1,7 @@
 import React, {FunctionComponent} from "react";
 
+import "./PageControl.css"
+
 export type PageControlProps = {
     current: number,
     max: number,
@@ -8,7 +10,7 @@ export type PageControlProps = {
 
 const PageControl: FunctionComponent<PageControlProps> = ({current, max, onChange}) => {
     return (
-        <div>
+        <div className="page-control">
             <button
                 onClick={() => onChange(current - 1)}
                 disabled={current == 0}

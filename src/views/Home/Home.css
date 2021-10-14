@@ -1,0 +1,10 @@
+body {
+    background-color: #DEDEEE;
+    padding: 0;
+    margin: 0;
+}
+
+.main {
+    margin-left: 300px;
+    box-sizing: inherit;
+}

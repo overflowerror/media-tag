@@ -4,6 +4,8 @@ import MediaListItem from "../MediaListItem";
 import {Query} from "../../database/query";
 import PageControl from "../PageControl";
 
+import "./MediaList.css"
+
 const pageLimit = 10
 
 export type MediaListProps = {
@@ -31,11 +33,13 @@ const MediaList: FunctionComponent<MediaListProps> = ({basePath, query, onSelect
             { size > 0 &&
                 <>
                     <PageControl current={page} max={maxPage} onChange={setPage} />
-                    {
-                        files.map(f => (
-                            <MediaListItem key={f.getPath()} basePath={basePath} file={f} onClick={onSelect}/>
-                        ))
-                    }
+                    <div className="media-list">
+                        {
+                            files.map(f => (
+                                <MediaListItem key={f.getPath()} basePath={basePath} file={f} onClick={onSelect}/>
+                            ))
+                        }
+                    </div>
                     <PageControl current={page} max={maxPage} onChange={setPage} />
                 </>
             }
