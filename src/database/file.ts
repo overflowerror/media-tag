@@ -116,6 +116,9 @@ export class MediaFile {
     public clone(): MediaFile {
         const clone = new MediaFile(this.path)
         clone.tags = [...this.tags]
+        clone.description = this.description
+        clone.group = this.group
+        clone.ordinal = this.ordinal
         return clone
     }
 
