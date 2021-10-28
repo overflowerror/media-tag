@@ -11,14 +11,16 @@ export type SidebarProps = {
 const Sidebar: FunctionComponent<SidebarProps> = ({countedTags, selected, onSelect}) => {
     return (
         <div className="sidebar">
+            <h2>Tags</h2>
             <ul>
                 {
                     countedTags.map(t => (
-                        <li key={t.name}>
-                            { selected.indexOf(t.name) >= 0 && "#" }
-                            <a onClick={() => onSelect(t.name)}>
-                                {t.name} ({t.count})
-                            </a>
+                        <li
+                            key={t.name}
+                            className={selected.indexOf(t.name) >= 0 ? "selected" : ""}
+                            onClick={() => onSelect(t.name)}
+                        >
+                            {t.name} ({t.count})
                         </li>
                     ))
                 }
